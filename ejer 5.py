@@ -12,5 +12,5 @@ def romano_a_decimal(romano):
         #digito mayor o igual al segundo, sumamos
         return valores[romano[0]] + romano_a_decimal(romano[1:])
 #uso
-numero_romano = "I"
+numero_romano = "I" #aca elegir uno de los valores en romano
 print("5-el numero romano", numero_romano, "es igual a:", romano_a_decimal(numero_romano), ", en decimal")
