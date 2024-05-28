@@ -39,7 +39,7 @@ for personaje in personajes_episodio_v:
 for personaje in personajes_episodio_vii:
     pila_episodio_vii.push(personaje.lower())  #minusculas para comparacion
 
-#intersección de ambas pilas
+#interseccion de ambas pilas
 def interseccion_pilas(pila1, pila2):
     interseccion = Stack()
     temp1 = Stack()
@@ -65,7 +65,7 @@ def interseccion_pilas(pila1, pila2):
 
     return interseccion
 
-#intersección de ambas pilas
+#interseccion de ambas pilas
 personajes_interseccion = interseccion_pilas(pila_episodio_v, pila_episodio_vii)
 
 #Mostrar los personajes que aparecen en ambos episodios
