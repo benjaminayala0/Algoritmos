@@ -131,7 +131,7 @@ entrenadores = [
     }
 ]
 
-# A-
+#A-
 def cantidad_pokemons(entrenadores, nombre_entrenador):
     for entrenador in entrenadores:
         if entrenador["nombre"] == nombre_entrenador:
@@ -141,7 +141,7 @@ def cantidad_pokemons(entrenadores, nombre_entrenador):
 print("A-")
 print("Cantidad de Pokemones de Ash Ketchum: ", cantidad_pokemons(entrenadores, "Ash Ketchum"))
 
-# B-
+#B-
 def entrenadores_mas_de_tres_torneos(entrenadores):
     for entrenador in entrenadores:
         if entrenador["torneos_ganados"] > 3:
@@ -150,7 +150,7 @@ print("B-")
 print("Entrenadores con mas de tres torneos ganados: ")
 entrenadores_mas_de_tres_torneos(entrenadores)
 
-# C-
+#C-
 def pokemon_mayor_nivel(entrenadores):
     max_torneos = 0
     entrenador_con_mas_torneos = None
@@ -170,7 +170,7 @@ def pokemon_mayor_nivel(entrenadores):
 print("C-")
 print("Pokemon de mayor nivel del entrenador con mas torneos ganados: ", pokemon_mayor_nivel(entrenadores))
 
-# D-
+#D-
 def entrenador_y_pokemons(entrenadores, nombre_entrenador):
     for entrenador in entrenadores:
         if entrenador["nombre"] == nombre_entrenador:
@@ -187,7 +187,7 @@ print("D-")
 print("Datos de Ash Ketchum y sus Pokemones: ")
 entrenador_y_pokemons(entrenadores, "Ash Ketchum")
 
-# E-
+#E-
 def entrenadores_mayor_porcentaje_victorias(entrenadores):
     for entrenador in entrenadores:
         batallas_totales = entrenador["batallas_perdidas"] + entrenador["batallas_ganadas"]
@@ -200,7 +200,7 @@ print("E-")
 print("Entrenadores con mas del 79% de batallas ganadas: ")
 entrenadores_mayor_porcentaje_victorias(entrenadores)
 
-# F - Entrenadores con Pokemones de tipo Fuego/Planta o Agua/Volador
+#F-
 def entrenadores_con_pokemons_especiales(entrenadores):
     for entrenador in entrenadores:
         tiene_fuego_planta = False
@@ -218,7 +218,7 @@ print("Entrenadores con Pokemones de tipo Fuego/Planta o Agua/Volador: ")
 entrenadores_con_pokemons_especiales(entrenadores)
 
 
-# G-
+#G-
 def promedio_nivel_pokemons(entrenadores, nombre_entrenador):
     for entrenador in entrenadores:
         if entrenador["nombre"] == nombre_entrenador:
@@ -231,7 +231,7 @@ def promedio_nivel_pokemons(entrenadores, nombre_entrenador):
 print("G-")
 print("Promedio de nivel de los Pokemones de Ash Ketchum:", promedio_nivel_pokemons(entrenadores, "Ash Ketchum"))
 
-# H-
+#H-
 def entrenadores_con_pokemon(entrenadores, nombre_pokemon):
     print("H-")
     count = 0
@@ -244,7 +244,7 @@ def entrenadores_con_pokemon(entrenadores, nombre_pokemon):
 
 print("Numero de entrenadores con Pikachu:", entrenadores_con_pokemon(entrenadores, "Pikachu"))
 
-# I - Entrenadores con Pokemones repetidos
+#I-
 def entrenadores_con_pokemons_repetidos(entrenadores):
     for entrenador in entrenadores:
         nombres_pokemons = [pokemon["nombre"] for pokemon in entrenador["equipo"]]
@@ -254,7 +254,7 @@ def entrenadores_con_pokemons_repetidos(entrenadores):
 print("I-")
 print("Entrenadores con Pokemones repetidos: ")
 entrenadores_con_pokemons_repetidos(entrenadores)
-# J-
+#J-
 def entrenadores_con_pokemons_especificos(entrenadores):
     pokemons_buscados = {"Tyrantrum", "Terrakion", "Wingull"}
     for entrenador in entrenadores:
@@ -266,7 +266,7 @@ print("J-")
 print("Entrenadores con Tyrantrum, Terrakion o Wingull:")
 entrenadores_con_pokemons_especificos(entrenadores)
 
-# K-
+#K-
 def entrenador_tiene_pokemon(entrenadores, nombre_entrenador, nombre_pokemon):
     for entrenador in entrenadores:
         if entrenador["nombre"] == nombre_entrenador:
