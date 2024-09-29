@@ -62,17 +62,17 @@ cola_operaciones.arrive(1, "General de la base", "Supervision de patrullas", "09
 def atender_operaciones(cola, n):
     for i in range(n):
         operacion = cola.attention()
-        print(f"Atendiendo operación {i+1}: {operacion[1]['descripcion']} por {operacion[1]['encargado']} a las {operacion[1]['hora']}")
+        print(f"Atendiendo operacion {i+1}: {operacion[1]['descripcion']} por {operacion[1]['encargado']} a las {operacion[1]['hora']}")
         if operacion[1].get("stormtroopers"):
             print(f"Se requieren {operacion[1]['stormtroopers']} Stormtroopers.")
-        print(f"Prioridad de la operación: {operacion[0]}")
+        print(f"Prioridad de la operacion: {operacion[0]}")
         print("---")
 
 atender_operaciones(cola_operaciones, 5)
 
-print("Añadiendo operacion despues de la quinta atencion: 'Revision de intrusos en el hangar B7' solicitada por Capitán Phasma.")
+print("Revision de intrusos en el hangar B7' solicitada por Capitan Phasma")
 cola_operaciones.arrive(2, "Capitan Phasma", "Revision de intrusos en el hangar B7", "13:00", 25)
 atender_operaciones(cola_operaciones, 1)
-print("Añadiendo operacion despues de la sexta atencion: 'Destruccion del planeta Takodana' solicitada por Snoke.")
+print("Destruccion del planeta Takodana' solicitada por Snoke")
 cola_operaciones.arrive(3, "Snoke", "Destruccion del planeta Takodana", "14:00")
 atender_operaciones(cola_operaciones, len(cola_operaciones.elements))
