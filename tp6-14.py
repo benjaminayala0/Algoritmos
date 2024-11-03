@@ -138,7 +138,7 @@ ambientes = ['cocina', 'comedor', 'cochera', 'quincho', 'baño 1', 'baño 2',
 for ambiente in ambientes:
     casa.insert_vertice(ambiente)
 
-#conexiones con pesos (en metros), asegurando al menos 3 aristas por vertice y 5 aristas para "cocina" y "comedor"
+#conexiones con pesos (en metros)
 casa.insert_arista('cocina', 'comedor', 2)
 casa.insert_arista('cocina', 'cochera', 5)
 casa.insert_arista('cocina', 'terraza', 4)
