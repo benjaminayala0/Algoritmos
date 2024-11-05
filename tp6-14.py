@@ -1,144 +1,95 @@
-from collections import deque
-import heapq
-
-class Queue:
-    def __init__(self):
-        self.queue = deque()
-    
-    def arrive(self, item):
-        self.queue.append(item)
-    
-    def attention(self):
-        return self.queue.popleft() if self.queue else None
-    
-    def size(self):
-        return len(self.queue)
-
-class HeapMin:
-    def __init__(self):
-        self.elements = []
-    
-    def arrive(self, item):
-        heapq.heappush(self.elements, item)
-    
-    def attention(self):
-        return heapq.heappop(self.elements) if self.elements else None
-    
-    def size(self):
-        return len(self.elements)
-
-class Stack:
-    def __init__(self):
-        self.stack = []
-    
-    def push(self, item):
-        self.stack.append(item)
-    
-    def pop(self):
-        return self.stack.pop() if self.stack else None
-    
-    def size(self):
-        return len(self.stack)
+from cola import Queue
+from heap import HeapMin
+from pila import Stack
 
 class Graph:
     def __init__(self, dirigido=False):
-        self.elements = []
+        self.adj_list = {}
         self.dirigido = dirigido
 
-    def show_graph(self):
-        print("\nGrafo:")
-        for nodo in self.elements:
-            print(f"Vertice: {nodo['value']}")
-            for arista in nodo['aristas']:
-                print(f"    {arista['value']} (peso: {arista['peso']} metros)")
-        print()
+    def insert_vertice(self, vertice):
+        if vertice not in self.adj_list:
+            self.adj_list[vertice] = []
 
-    def search(self, value):
-        for index, element in enumerate(self.elements):
-            if element['value'] == value:
-                return index
-        return None
+    def insert_arista(self, origen, destino, peso=1):
+        self.adj_list[origen].append((destino, peso))
+        if not self.dirigido:
+            self.adj_list[destino].append((origen, peso))
 
-    def insert_vertice(self, value):
-        if self.search(value) is None:
-            self.elements.append({'value': value, 'aristas': [], 'visitado': False})
+    def dijkstra(self, inicio):
+        distancias = {vertice: float('inf') for vertice in self.adj_list}
+        previos = {vertice: None for vertice in self.adj_list}
+        distancias[inicio] = 0
+        min_heap = HeapMin()
 
-    def insert_arista(self, origen, destino, peso):
-        pos_origen = self.search(origen)
-        pos_destino = self.search(destino)
-        if pos_origen is not None and pos_destino is not None:
-            self.elements[pos_origen]['aristas'].append({'value': destino, 'peso': peso})
-            if not self.dirigido:
-                self.elements[pos_destino]['aristas'].append({'value': origen, 'peso': peso})
+        min_heap.add((0, inicio))
 
-    def mark_as_not_visited(self):
-        for nodo in self.elements:
-            nodo['visitado'] = False
+        while len(min_heap.elements) > 0:
+            distancia_actual, actual = min_heap.remove()
 
-    def dijkstra(self, origen):
-        from math import inf
-        no_visitados = HeapMin()
-        caminos = {nodo['value']: (inf, None) for nodo in self.elements} 
-        caminos[origen] = (0, None)  
-        no_visitados.arrive((0, origen))  
+            for vecino, peso in self.adj_list[actual]:
+                distancia = distancia_actual + peso
 
-        while no_visitados.size() > 0:
-            distancia_actual, nodo_actual = no_visitados.attention()
+                if distancia < distancias[vecino]:
+                    distancias[vecino] = distancia
+                    previos[vecino] = actual
+                    min_heap.add((distancia, vecino))
 
-            pos_actual = self.search(nodo_actual)
-            if pos_actual is not None:
-                for adyacente in self.elements[pos_actual]['aristas']:
-                    distancia_nueva = distancia_actual + adyacente['peso']
-                    if distancia_nueva < caminos[adyacente['value']][0]:
-                        caminos[adyacente['value']] = (distancia_nueva, nodo_actual)
-                        no_visitados.arrive((distancia_nueva, adyacente['value']))
+        return {vertice: (distancias[vertice], previos[vertice]) for vertice in self.adj_list}
 
-        return caminos
     def kruskal(self):
-        def find(parent, vertex):
-            if parent[vertex] == vertex:
-                return vertex
-            return find(parent, parent[vertex])
+        aristas = []
+        for origen in self.adj_list:
+            for destino, peso in self.adj_list[origen]:
+                if (origen, destino, peso) not in aristas and (destino, origen, peso) not in aristas:
+                    aristas.append((origen, destino, peso))
 
-        def union(parent, rank, v1, v2):
-            root1 = find(parent, v1)
-            root2 = find(parent, v2)
-            if rank[root1] > rank[root2]:
-                parent[root2] = root1
-            elif rank[root1] < rank[root2]:
-                parent[root1] = root2
-            else:
-                parent[root2] = root1
-                rank[root1] += 1
+        aristas.sort(key=lambda arista: arista[2])
 
-        edges = []
-        for nodo in self.elements:
-            for arista in nodo['aristas']:
-                edges.append((arista['peso'], nodo['value'], arista['value']))
-        edges = sorted(edges, key=lambda x: x[0])
+        parent = {}
+        rank = {}
 
-        parent = {nodo['value']: nodo['value'] for nodo in self.elements}
-        rank = {nodo['value']: 0 for nodo in self.elements}
+        def find(vertice):
+            if parent[vertice] != vertice:
+                parent[vertice] = find(parent[vertice])
+            return parent[vertice]
+
+        def union(vertice1, vertice2):
+            root1 = find(vertice1)
+            root2 = find(vertice2)
+
+            if root1 != root2:
+                if rank[root1] > rank[root2]:
+                    parent[root2] = root1
+                else:
+                    parent[root1] = root2
+                    if rank[root1] == rank[root2]:
+                        rank[root2] += 1
+
+        for vertice in self.adj_list:
+            parent[vertice] = vertice
+            rank[vertice] = 0
+
         mst = []
-
-        for peso, origen, destino in edges:
-            root_origen = find(parent, origen)
-            root_destino = find(parent, destino)
-            if root_origen != root_destino:
+        for origen, destino, peso in aristas:
+            if find(origen) != find(destino):
+                union(origen, destino)
                 mst.append((origen, destino, peso))
-                union(parent, rank, root_origen, root_destino)
 
         return mst
 
+    def show_graph(self):
+        for vertice, aristas in self.adj_list.items():
+            print(f"{vertice}: {aristas}")
 
-#grafo con los ambientes de la casa
+# grafo
 casa = Graph(dirigido=False)
-ambientes = ['cocina', 'comedor', 'cochera', 'quincho', 'baño 1', 'baño 2', 
+ambientes = ['cocina', 'comedor', 'cochera', 'quincho', 'baño 1', 'baño 2',
              'habitacion 1', 'habitacion 2', 'sala de estar', 'terraza', 'patio']
 for ambiente in ambientes:
     casa.insert_vertice(ambiente)
 
-#conexiones con pesos (en metros)
+# conexiones con pesos (en metros)
 casa.insert_arista('cocina', 'comedor', 2)
 casa.insert_arista('cocina', 'cochera', 5)
 casa.insert_arista('cocina', 'terraza', 4)
@@ -171,32 +122,32 @@ casa.insert_arista('quincho', 'baño 1', 8)
 casa.insert_arista('quincho', 'baño 2', 4)
 
 casa.insert_arista('cochera', 'patio', 7)
+casa.insert_arista('cochera', 'baño 1', 3)
+casa.insert_arista('cochera', 'habitacion 2', 6)
 
-#A.1
+#caminos mas cortos desde cocina a los demas ambientes
 caminos = casa.dijkstra('cocina')
-print("A.1-Caminos mas cortos desde cocina a los demas ambientes:")
+print("caminos mas cortos desde cocina a los demas ambientes:")
 for destino, (distancia, previo) in caminos.items():
     print(f"{destino}: distancia {distancia} metros, previo {previo}")
 
-#A.2
+#C.1-
 mst = casa.kruskal()
-print("A.2-\nArbol de expansion minima para conectar todos los ambientes:")
+print("\nC.1 - Arbol de expansion minima para conectar todos los ambientes:")
 for origen, destino, peso in mst:
     print(f"{origen} - {destino} (peso: {peso} metros)")
 
-#B
-print("\nB y C-")
+#B-
+print("\nB - Grafo:")
 casa.show_graph()
-mst = casa.kruskal()
 
-#C.2
+#C.2-
 metros_de_cable = sum(peso for _, _, peso in mst)
-print("C.2- \nCantidad total de metros de cable necesarios para conectar todos los ambientes:")
+print("\nC.2 - Cantidad total de metros de cable necesarios:")
 print(f"{metros_de_cable} metros")
 
-#D
+#D-
 caminos = casa.dijkstra('habitacion 1')
 distancia, previo = caminos['sala de estar']
-
-print("D- \nCantidad de metros de cable de red necesarios para conectar el router con el Smart TV:")
+print("\nD - Cantidad de metros de cable de red necesarios para conectar habitación 1 con sala de estar:")
 print(f"{distancia} metros")
