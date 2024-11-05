@@ -34,7 +34,6 @@ def mostrar_pokemon_lista(lista):
     for pokemon in lista:
         print(pokemon)
 
-#B-
 def mostrar_pokemon_por_numero_y_nombre(numero, nombre_proximidad):
     #buscar por numero exacto
     resultado_numero = arbol_numero.search(numero)
@@ -53,7 +52,6 @@ def mostrar_pokemon_por_numero_y_nombre(numero, nombre_proximidad):
     else:
         print(f"\nNo se encontraron Pokemones cuyo nombre contenga '{nombre_proximidad}'")
 
-#C-
 def mostrar_nombres_por_tipo(tipo):
     resultados_tipo = arbol_tipo.search_by_type(tipo)
     if resultados_tipo:
@@ -63,7 +61,6 @@ def mostrar_nombres_por_tipo(tipo):
     else:
         print(f"\nNo se encontraron Pokemones de tipo '{tipo}'")
 
-#D-
 def realizar_listados():
     #listado en orden ascendente por numero
     print("\nD.1- Pokemon en orden ascendente por numero:")
@@ -81,7 +78,6 @@ def realizar_listados():
     for nivel, nombre in pokemons_por_nivel:
         print(f"Nivel {nivel}: {nombre}")
 
-#E-
 def mostrar_pokemones_especificos(nombres):
     print("\nE- Datos de Pokemon especificos:")
     for nombre in nombres:
@@ -91,7 +87,6 @@ def mostrar_pokemones_especificos(nombres):
         else:
             print(f"Pokemon {nombre} no encontrado")
         
-#F-
 def contar_pokemon_por_tipos():
     tipos_a_contar = ["Electric", "Steel"]
     contador = {} 
@@ -102,7 +97,6 @@ def contar_pokemon_por_tipos():
     print(f"F- Cantidad de Pokemon de tipo electrico: {contador.get('Electric', 0)}")
     print(f"Cantidad de Pokemon de tipo acero: {contador.get('Steel', 0)}")
 
-#Resultados
 #B-
 mostrar_pokemon_por_numero_y_nombre(7, "bul")#ej:numero 7 y proximidad "bul"
 
